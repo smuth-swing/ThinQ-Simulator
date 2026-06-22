@@ -262,7 +262,8 @@ function restoreScreenByState() {
     return;
   }
 
-  if (step === 0) showHome(true);
+  if (step === -1 || step === undefined) showSplash();
+  else if (step === 0) showHome(true);
   else if (step === 1) showProductSelect(true);
   else if (step === 2) {
     if (state.selectedProduct.id === 'washer') {
@@ -1510,11 +1511,13 @@ function setupEventListeners() {
   
   const apiKeyInput = document.getElementById('apiKeyInput');
   if (apiKeyInput) {
-    const savedKey = localStorage.getItem('GEMINI_API_KEY');
-    if (savedKey) apiKeyInput.value = savedKey;
-    apiKeyInput.addEventListener('change', (e) => {
-      localStorage.setItem('GEMINI_API_KEY', e.target.value.trim());
-    });
+    try {
+      const savedKey = localStorage.getItem('GEMINI_API_KEY');
+      if (savedKey) apiKeyInput.value = savedKey;
+      apiKeyInput.addEventListener('change', (e) => {
+        try { localStorage.setItem('GEMINI_API_KEY', e.target.value.trim()); } catch(e) {}
+      });
+    } catch(e) {}
   }
   document.querySelectorAll('.step-dot').forEach(dot => {
     dot.addEventListener('click', () => {
