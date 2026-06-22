@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ThinQ 제품 연결 AI 매니저 (v2)</title>
+  <meta name="description" content="LG ThinQ 스마트 가전 제품 연결을 도와주는 AI 매니저 시뮬레이터" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style_v2.css?v=11" />
+</head>
+<body>
+  <!-- 배경 파티클 -->
+  <div class="bg-particles" id="bgParticles"></div>
+
+  <!-- 메인 레이아웃 -->
+  <div class="app-layout">
+
+    <!-- 왼쪽: AI 매니저 패널 -->
+    <aside class="ai-panel" id="aiPanel">
+      <div class="ai-header">
+        <div class="ai-avatar">
+          <div class="ai-avatar-inner">
+            <span class="ai-icon">✦</span>
+          </div>
+          <div class="ai-status-dot"></div>
+        </div>
+        <div class="ai-info">
+          <h2 class="ai-name">ThinQ AI 매니저</h2>
+          <span class="ai-badge">온라인</span>
+        </div>
+        <div class="api-key-config" style="margin-left: auto;">
+          <input type="password" id="apiKeyInput" placeholder="Gemini API Key..." style="padding:4px 8px; font-size:11px; border:1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white; border-radius:4px; width:130px; outline:none;" title="발급받은 Gemini API Key를 입력하세요" />
+        </div>
+      </div>
+
+      <div class="chat-container" id="chatContainer">
+        <!-- 채팅 메시지가 동적으로 추가됨 -->
+      </div>
+
+      <div class="chat-input-area">
+        <div class="quick-actions" id="quickActions">
+          <!-- 빠른 답변 버튼들 -->
+        </div>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="userInput"
+            placeholder="질문을 입력하세요..."
+            class="chat-input"
+            autocomplete="off"
+          />
+          <button class="send-btn" id="sendBtn" title="전송">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 가운데: 모바일 시뮬레이터 -->
+    <main class="simulator-area">
+      <div class="simulator-title">
+        <span class="sim-label">📱 ThinQ 앱 시뮬레이터</span>
+        <div class="sim-controls">
+          <button class="sim-btn" id="resetBtn" title="처음으로">↺ 초기화</button>
+        </div>
+      </div>
+
+      <!-- 스마트폰 프레임 -->
+      <div class="phone-frame">
+        <!-- 노치/카메라 -->
+        <div class="phone-notch">
+          <div class="phone-camera"></div>
+          <div class="phone-speaker"></div>
+        </div>
+
+        <!-- 화면 영역 -->
+        <div class="phone-screen" id="phoneScreen">
+          <!-- 상태바 -->
+          <div class="status-bar">
+            <span class="status-time" id="statusTime">10:39</span>
+            <div class="status-icons">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <rect x="1" y="6" width="15" height="12" rx="2" ry="2"/>
+                <line x1="23" y1="13" x2="23" y2="11"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- 앱 화면 컨텐츠 (JS로 동적 변경) -->
+          <div class="screen-content" id="screenContent">
+            <!-- 초기 화면: 스플래시 -->
+          </div>
+
+          <!-- 플로팅 AI 아이콘 -->
+          <div class="floating-ai" id="floatingAi">
+            <div class="floating-ai-tooltip" id="floatingAiTooltip">제품을 선택해주세요!</div>
+            <div class="floating-ai-icon">✦</div>
+          </div>
+        </div>
+
+        <!-- 홈 인디케이터 -->
+        <div class="phone-home-indicator"></div>
+        <!-- 측면 버튼들 -->
+        <div class="phone-side-buttons">
+          <div class="side-btn vol-up"></div>
+          <div class="side-btn vol-down"></div>
+        </div>
+        <div class="phone-power-btn"></div>
+      </div>
+
+      <!-- 진행 단계 표시 -->
+      <div class="progress-indicator" id="progressIndicator">
+        <div class="step-dots">
+          <div class="step-dot active" data-step="0" title="시작"></div>
+          <div class="step-dot" data-step="1" title="제품 선택"></div>
+          <div class="step-dot" data-step="2" title="Wi-Fi 설정"></div>
+          <div class="step-dot" data-step="3" title="제품 검색"></div>
+          <div class="step-dot" data-step="4" title="연결 완료"></div>
+        </div>
+        <span class="step-label" id="stepLabel">시작</span>
+      </div>
+    </main>
+
+    <!-- 오른쪽: 가이드 패널 -->
+    <aside class="guide-panel" id="guidePanel">
+      <div class="guide-header">
+        <h3>📋 연결 가이드</h3>
+        <span class="guide-step-badge" id="guideStepBadge">준비중</span>
+      </div>
+
+      <div class="guide-content" id="guideContent">
+        <div class="guide-item active" id="guideIntro">
+          <div class="guide-icon">🏠</div>
+          <h4>ThinQ AI 매니저란?</h4>
+          <p>LG ThinQ 앱의 제품 연결 과정을 단계별로 시뮬레이션하고, AI가 실시간으로 안내해 드립니다.</p>
+          <div class="guide-tips">
+            <div class="tip-item">
+              <span class="tip-icon">💡</span>
+              <span>왼쪽 AI에게 질문하세요</span>
+            </div>
+            <div class="tip-item">
+              <span class="tip-icon">📱</span>
+              <span>화면을 클릭해서 진행하세요</span>
+            </div>
+            <div class="tip-item">
+              <span class="tip-icon">🔄</span>
+              <span>언제든 초기화할 수 있습니다</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 제품 정보 카드 -->
+      <div class="product-card" id="productCard" style="display:none;">
+        <div class="product-card-header">선택된 제품</div>
+        <div class="product-card-content" id="productCardContent"></div>
+      </div>
+
+      <!-- 연결 상태 모니터 -->
+      <div class="connection-monitor" id="connectionMonitor" style="display:none;">
+        <div class="monitor-title">연결 상태</div>
+        <div class="monitor-items" id="monitorItems"></div>
+      </div>
+
+      <!-- 고객 대화 추출 정보 (Slot) 모니터 -->
+      <div class="connection-monitor" id="aiSlotMonitor" style="display:none; margin-top: 15px;">
+        <div class="monitor-title">🧠 고객 대화 분석 정보</div>
+        <div class="monitor-items" id="aiSlotItems" style="font-size: 11px;"></div>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="agent_knowledge.js?v=13"></script>
+  <script src="app_v2.js?v=46"></script>
+</body>
+</html>

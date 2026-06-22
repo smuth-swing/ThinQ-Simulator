@@ -1,0 +1,11 @@
+ReferenceError: document is not defined
+    at Object.<anonymous> (D:\AI Coding\회사용\제품 연결 메니져\app_v2.js:75:23)
+    at Module._compile (node:internal/modules/cjs/loader:1830:14)
+    at Object..js (node:internal/modules/cjs/loader:1961:10)
+    at Module.load (node:internal/modules/cjs/loader:1553:32)
+    at Module._load (node:internal/modules/cjs/loader:1355:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1576:12)
+    at require (node:internal/modules/helpers:153:16)
+    at [eval]:1:33
+    at runScriptInThisContext (node:internal/vm:219:10)
