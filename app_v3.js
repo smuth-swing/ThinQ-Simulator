@@ -1191,11 +1191,27 @@ ${wifiStr}
         console.error("Gemini API Error details:", data.error);
         if ((data.error.code === 400 || data.error.code === 403 || data.error.code === 429) && fallbackApiKeys.length > 0 && retryCount < fallbackApiKeys.length) {
             console.log("API Key failed. Switching to next key...");
+            
+            const existingTyping = document.querySelectorAll('.chat-msg.ai .typing-indicator');
+            existingTyping.forEach(el => {
+                const parent = el.closest('.chat-msg');
+                if (parent) parent.style.display = 'none';
+            });
+
+            addAiMessage("🚨 Agent에 오류가 발생하여 자동 수정 중...");
+            
             currentKeyIndex++;
             const newKey = fallbackApiKeys[currentKeyIndex % fallbackApiKeys.length];
             try { localStorage.setItem('GEMINI_API_KEY', newKey); } catch(e) {}
             const apiKeyInput = document.getElementById('apiKeyInput');
             if (apiKeyInput) apiKeyInput.value = newKey;
+            
+            await new Promise(r => setTimeout(r, 2000));
+            
+            addAiMessage("✅ 수정이 완료되었습니다. 이전 명령을 재수행할게요!");
+            
+            await new Promise(r => setTimeout(r, 2000));
+            
             return await callGemini(userText, retryCount + 1);
         }
         if (data.error.code === 503) {
