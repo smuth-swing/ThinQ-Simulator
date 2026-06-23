@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThinQ 제품 연결 AI Agent 평가 설문</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+      background-color: #f3f2f1;
+      margin: 0;
+      padding: 40px 20px;
+      color: #323130;
+    }
+    .form-container {
+      max-width: 740px;
+      margin: 0 auto;
+    }
+    .header-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 32px;
+      box-shadow: 0 1.6px 3.6px 0 rgba(0,0,0,0.132), 0 0.3px 0.9px 0 rgba(0,0,0,0.108);
+      margin-bottom: 16px;
+      border-top: 6px solid #0078d4;
+    }
+    .header-card h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+      color: #323130;
+    }
+    .header-card p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #605e5c;
+      margin: 0;
+    }
+    .question-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 32px;
+      box-shadow: 0 1.6px 3.6px 0 rgba(0,0,0,0.132), 0 0.3px 0.9px 0 rgba(0,0,0,0.108);
+      margin-bottom: 16px;
+    }
+    .question-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 16px 0;
+    }
+    .required-star {
+      color: #a4262c;
+      margin-left: 4px;
+    }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+    .radio-option:last-child {
+      margin-bottom: 0;
+    }
+    .radio-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      margin: 0 12px 0 0;
+      accent-color: #0078d4;
+      cursor: pointer;
+    }
+    .radio-label {
+      font-size: 14px;
+      color: #323130;
+      cursor: pointer;
+    }
+    .submit-btn {
+      background-color: #0078d4;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 32px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: background-color 0.2s;
+    }
+    .submit-btn:hover {
+      background-color: #106ebe;
+    }
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 40px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 1.6px 3.6px 0 rgba(0,0,0,0.132);
+    }
+    .success-message h2 {
+      color: #0078d4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container" id="formContainer">
+    <!-- Header -->
+    <div class="header-card">
+      <h1>ThinQ 제품 연결 AI Agent 평가 설문</h1>
+      <p>Simulator를 통해 3가지 버전의 ThinQ 제품 연결 AI Agent를 직접 사용해보신 후, 제품 연결 시 가장 사용하기 편하다고 생각되는 Agent Type을 선택해 주세요.</p>
+    </div>
+
+    <!-- Question -->
+    <div class="question-card">
+      <div class="question-title">
+        1. 제품 연결 시 사용하기 가장 편하다고 생각되는 Agent Type을 선택해 주세요.<span class="required-star">*</span>
+      </div>
+      
+      <label class="radio-option">
+        <input type="radio" name="agentType" value="1" required>
+        <span class="radio-label">기본 가이드형(기존 UX 기반 Rule Base형)</span>
+      </label>
+      
+      <label class="radio-option">
+        <input type="radio" name="agentType" value="2">
+        <span class="radio-label">팝업 챗봇형(기존 UX + LLM 기반 Agent)</span>
+      </label>
+      
+      <label class="radio-option">
+        <input type="radio" name="agentType" value="3">
+        <span class="radio-label">챗봇 대화형(ThinQ 챗봇 형태)</span>
+      </label>
+    </div>
+
+    <!-- Submit -->
+    <button class="submit-btn" onclick="submitForm()">제출</button>
+  </div>
+
+  <!-- Success Message -->
+  <div class="form-container success-message" id="successMessage">
+    <h2>감사합니다!</h2>
+    <p>응답이 성공적으로 제출되었습니다. 소중한 의견에 감사드립니다.</p>
+  </div>
+
+  <script>
+    function submitForm() {
+      const selected = document.querySelector('input[name="agentType"]:checked');
+      if (!selected) {
+        alert('문항을 선택해 주세요.');
+        return;
+      }
+      
+      // 선택된 값 확인 (1, 2, 3)
+      console.log('선택된 Agent Type:', selected.value);
+      
+      // 화면 전환
+      document.getElementById('formContainer').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+
+      // (주의) 현재는 화면만 넘어가는 데모 폼입니다.
+      // 실제 데이터를 구글 시트 등으로 보내시려면 여기에 fetch() API 코드를 추가해야 합니다.
+    }
+  </script>
+</body>
+</html>
