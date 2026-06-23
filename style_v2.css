@@ -1,15 +1,15 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --surface2: #f1f5f9;
-  --border: rgba(0,0,0,0.1);
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: rgba(255,255,255,0.08);
   --accent: #c8102e;
   --accent2: #ff4d6d;
   --blue: #3b82f6;
-  --text: #0f172a;
-  --text2: #334155;
-  --text3: #475569;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --text3: #64748b;
   --green: #22c55e;
   --yellow: #f59e0b;
   --radius: 16px;
@@ -24,17 +24,8 @@ body { font-family: "Pretendard", -apple-system, sans-serif; background: var(--b
 .app-layout { position: relative; z-index: 1; display: grid; grid-template-columns: 340px 1fr 300px; height: 100vh; gap: 0; }
 
 /* AI 패널 */
-.ai-panel, .guide-panel {
-  --surface: #111111;
-  --surface2: #222222;
-  --text: #ffffff;
-  --text2: #cccccc;
-  --text3: #999999;
-  --border: #333333;
-  color: var(--text);
-}
 .ai-panel { background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
-.ai-header { padding: 20px; background: linear-gradient(135deg, #222222, #1a1a1a); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
+.ai-header { padding: 20px; background: linear-gradient(135deg, #1a0a10, #0d1a2e); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
 .ai-avatar { position: relative; }
 .ai-avatar-inner { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; animation: pulse-ring 2s ease-in-out infinite; }
 @keyframes pulse-ring { 0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,0.4)} 50%{box-shadow:0 0 0 10px rgba(200,16,46,0)} }
@@ -75,15 +66,15 @@ body { font-family: "Pretendard", -apple-system, sans-serif; background: var(--b
 .send-btn svg { width: 16px; height: 16px; }
 
 /* 시뮬레이터 영역 */
-.simulator-area { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: radial-gradient(ellipse at center, #ffffff 0%, var(--bg) 100%); padding: 20px; }
+.simulator-area { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: radial-gradient(ellipse at center, #0d1520 0%, var(--bg) 100%); padding: 20px; }
 .simulator-title { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 420px; }
 .sim-label { font-size: 13px; color: var(--text3); font-weight: 500; }
 .sim-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; }
 .sim-btn:hover { background: var(--surface); color: var(--text); }
 
 /* 스마트폰 프레임 */
-.phone-frame { position: relative; width: 320px; height: 690px; background: #f8fafc; border-radius: 44px; box-shadow: 0 0 0 2px #e2e8f0, 0 0 0 4px #cbd5e1, 0 30px 80px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(255,255,255,0.5); overflow: visible; flex-shrink: 0; }
-.phone-notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 120px; height: 28px; background: #cbd5e1; border-radius: 0 0 16px 16px; z-index: 20; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.phone-frame { position: relative; width: 320px; height: 690px; background: #1a1a2e; border-radius: 44px; box-shadow: 0 0 0 2px #2a2a4a, 0 0 0 4px #111, 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.05); overflow: visible; flex-shrink: 0; }
+.phone-notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 120px; height: 28px; background: #111; border-radius: 0 0 16px 16px; z-index: 20; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .phone-camera { width: 10px; height: 10px; background: #222; border-radius: 50%; border: 2px solid #333; box-shadow: inset 0 0 4px rgba(100,150,255,0.3); }
 .phone-speaker { width: 50px; height: 4px; background: #222; border-radius: 4px; }
 .phone-screen { position: absolute; inset: 0; border-radius: 44px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
