@@ -1115,7 +1115,8 @@ function updateQuickActions() {
 let chatHistory = [];
 
 async function callGemini(userText) {
-  let API_KEY = localStorage.getItem('GEMINI_API_KEY') || document.getElementById('apiKeyInput')?.value;
+  const urlParams = new URLSearchParams(window.location.search);
+  let API_KEY = urlParams.get('apikey') || localStorage.getItem('GEMINI_API_KEY') || document.getElementById('apiKeyInput')?.value;
   if (!API_KEY) {
     return `{"ai_message": "🚨 API 키가 필요합니다. 개발자 도구 콘솔에서 localStorage.setItem('GEMINI_API_KEY', '발급받은키') 를 입력하시거나, v3 버전을 이용해 주세요."}`;
   }

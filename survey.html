@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>ThinQ 시뮬레이터 설문조사</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; background: #f4f5f7; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    .header { padding: 15px 20px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 10; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .title { font-size: 18px; font-weight: 700; color: #333; }
+    .tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+    .tab { padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; color: #555; background: #eee; transition: all 0.2s; border: none; font-size: 14px; }
+    .tab:hover { background: #ddd; }
+    .tab.active { background: #ff4d6d; color: #fff; box-shadow: 0 2px 8px rgba(255, 77, 109, 0.4); }
+    .iframe-container { flex: 1; position: relative; }
+    iframe { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; display: none; }
+    iframe.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">ThinQ AI 시뮬레이터 UI 평가 📊</div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab(1)">버전 1 (기본 가이드형)</button>
+      <button class="tab" onclick="switchTab(2)">버전 2 (팝업 챗봇형)</button>
+      <button class="tab" onclick="switchTab(3)">버전 3 (통합 대화형)</button>
+    </div>
+  </div>
+  
+  <div class="iframe-container">
+    <iframe id="frame1" class="active"></iframe>
+    <iframe id="frame2"></iframe>
+    <iframe id="frame3"></iframe>
+  </div>
+
+  <script>
+    // URL에서 apikey 파라미터 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const apikey = urlParams.get('apikey') || '';
+    const qs = apikey ? '?apikey=' + encodeURIComponent(apikey) : '';
+
+    // 각 iframe src 설정 (GitHub Pages 경로 기준)
+    document.getElementById('frame1').src = 'index.html' + qs;
+    document.getElementById('frame2').src = 'index_v2.html' + qs;
+    document.getElementById('frame3').src = 'index_v3.html' + qs;
+
+    function switchTab(num) {
+      document.querySelectorAll('.tab').forEach((el, i) => {
+        el.classList.toggle('active', i === (num - 1));
+      });
+      document.querySelectorAll('iframe').forEach((el, i) => {
+        el.classList.toggle('active', i === (num - 1));
+      });
+    }
+  </script>
+</body>
+</html>

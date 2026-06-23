@@ -1066,7 +1066,8 @@ function updateQuickActions() {
 let chatHistory = [];
 
 async function callGemini(userText) {
-  let API_KEY = localStorage.getItem('GEMINI_API_KEY') || document.getElementById('apiKeyInput')?.value;
+  const urlParams = new URLSearchParams(window.location.search);
+  let API_KEY = urlParams.get('apikey') || localStorage.getItem('GEMINI_API_KEY') || document.getElementById('apiKeyInput')?.value;
   if (!API_KEY) {
     return `{"ai_message": "🚨 API 키가 필요합니다. 상단의 입력창(Gemini API Key...)에 발급받은 본인의 API Key를 입력해주세요."}`;
   }
