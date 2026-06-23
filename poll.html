@@ -143,22 +143,40 @@
   </div>
 
   <script>
-    function submitForm() {
+    async function submitForm() {
       const selected = document.querySelector('input[name="agentType"]:checked');
       if (!selected) {
         alert('문항을 선택해 주세요.');
         return;
       }
       
-      // 선택된 값 확인 (1, 2, 3)
-      console.log('선택된 Agent Type:', selected.value);
-      
-      // 화면 전환
-      document.getElementById('formContainer').style.display = 'none';
-      document.getElementById('successMessage').style.display = 'block';
+      const submitBtn = document.querySelector('.submit-btn');
+      const originalText = submitBtn.innerText;
+      submitBtn.innerText = '제출 중...';
+      submitBtn.disabled = true;
 
-      // (주의) 현재는 화면만 넘어가는 데모 폼입니다.
-      // 실제 데이터를 구글 시트 등으로 보내시려면 여기에 fetch() API 코드를 추가해야 합니다.
+      try {
+        const response = await fetch('https://script.google.com/a/macros/lge.com/s/AKfycbxre5M3-KcyQuaHWXautzNufgJq3SQQCwutI0JLTo9s0LaFiWC4e0i8xbT6fnaji506/exec', {
+          method: 'POST',
+          // 구글 앱스 스크립트 CORS 이슈 방지를 위해 'text/plain' 사용 권장됨
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+          },
+          body: JSON.stringify({ agentType: selected.value })
+        });
+        
+        const result = await response.json();
+        console.log('서버 응답:', result);
+
+        // 화면 전환
+        document.getElementById('formContainer').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'block';
+      } catch(error) {
+        console.error('제출 오류:', error);
+        alert('제출 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+      }
     }
   </script>
 </body>
