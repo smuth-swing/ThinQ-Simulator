@@ -27,7 +27,7 @@ function loadAppState() {
 }
 
 function clearAppState() {
-  localStorage.removeItem(APP_STATE_STORAGE_KEY);
+  try { localStorage.removeItem(APP_STATE_STORAGE_KEY); } catch(e) {}
 }
 
 let splashTimeout = null;
@@ -215,8 +215,10 @@ function restoreChatFromStorage() {
 
 // 채팅 이력 완전 삭제
 function clearChatStorage() {
-  localStorage.removeItem(CHAT_STORAGE_KEY);
-  localStorage.removeItem(GEMINI_HISTORY_KEY);
+  try {
+    localStorage.removeItem(CHAT_STORAGE_KEY);
+    localStorage.removeItem(GEMINI_HISTORY_KEY);
+  } catch(e) {}
   clearAppState();
 }
 
@@ -1116,7 +1118,11 @@ let chatHistory = [];
 
 async function callGemini(userText) {
   const urlParams = new URLSearchParams(window.location.search);
-  let API_KEY = urlParams.get('apikey') || localStorage.getItem('GEMINI_API_KEY') || document.getElementById('apiKeyInput')?.value;
+  let API_KEY = urlParams.get('apikey');
+  if (!API_KEY) {
+    try { API_KEY = localStorage.getItem('GEMINI_API_KEY'); } catch(e) {}
+  }
+  API_KEY = API_KEY || document.getElementById('apiKeyInput')?.value;
   if (!API_KEY) {
     return `{"ai_message": "🚨 API 키가 필요합니다. 개발자 도구 콘솔에서 localStorage.setItem('GEMINI_API_KEY', '발급받은키') 를 입력하시거나, v3 버전을 이용해 주세요."}`;
   }
@@ -1529,7 +1535,8 @@ function setupEventListeners() {
   
   const apiKeyInput = document.getElementById('apiKeyInput');
   if (apiKeyInput) {
-    const savedKey = localStorage.getItem('GEMINI_API_KEY');
+    let savedKey = null;
+    try { savedKey = localStorage.getItem('GEMINI_API_KEY'); } catch(e) {}
     if (savedKey) apiKeyInput.value = savedKey;
     apiKeyInput.addEventListener('change', (e) => {
       localStorage.setItem('GEMINI_API_KEY', e.target.value.trim());

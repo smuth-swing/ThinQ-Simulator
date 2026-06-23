@@ -735,7 +735,8 @@ function reset() {
   
   const floatingAi = document.getElementById('floatingAi');
   if (floatingAi) {
-    const isAiIconOff = localStorage.getItem('aiIconOff') === 'true';
+    let isAiIconOff = false;
+    try { isAiIconOff = localStorage.getItem('aiIconOff') === 'true'; } catch(e) {}
     if (isAiIconOff) {
       floatingAi.classList.add('off');
     } else {
@@ -763,7 +764,8 @@ function updateProgress() {
     floatingAiTooltip.classList.remove('expanded'); // 확장 클래스 초기화
     if (step >= 1) {
       floatingAi.classList.add('show');
-      const isAiIconOff = localStorage.getItem('aiIconOff') === 'true';
+      let isAiIconOff = false;
+      try { isAiIconOff = localStorage.getItem('aiIconOff') === 'true'; } catch(e) {}
       if (isAiIconOff) {
         floatingAi.classList.add('off');
       } else {
