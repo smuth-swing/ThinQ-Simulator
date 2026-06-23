@@ -162,7 +162,7 @@
       else if (selected.value === "3") typeName = "3번 - 챗봇 대화형";
 
       try {
-        const response = await fetch('https://formsubmit.co/ajax/youngdoo.shin@lge.com', {
+        const response = await fetch('https://formsubmit.co/ajax/rapids1@naver.com', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -170,6 +170,7 @@
           },
           body: JSON.stringify({
             "💡 선택한 시뮬레이터 버전": typeName,
+            "👤 발신자(알림)": "youngdoo.shin@lge.com",
             "_subject": "[ThinQ 시뮬레이터] 새로운 투표가 도착했습니다! (" + typeName + ")"
           })
         });
