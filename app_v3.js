@@ -1066,13 +1066,9 @@ function updateQuickActions() {
 let chatHistory = [];
 
 async function callGemini(userText) {
-  // 사용자 정의 키 또는 기본 키
-    // [보안 경고] 
-  // 실제 서비스(Production) 환경에서는 절대 API Key를 프론트엔드 코드에 하드코딩해서는 안 됩니다.
-  // 이 코드는 시뮬레이터 데모용으로 작성되었습니다.
   let API_KEY = localStorage.getItem('GEMINI_API_KEY') || document.getElementById('apiKeyInput')?.value;
   if (!API_KEY) {
-    API_KEY = "AIzaSyBw5OKYJHN5iLAeh60XEAsesxLaeRqkF28"; // 기본 fallback
+    return `{"ai_message": "🚨 API 키가 필요합니다. 상단의 입력창(Gemini API Key...)에 발급받은 본인의 API Key를 입력해주세요."}`;
   }
   
   // 새로 작동이 확인된 최신 모델 적용 (3.5 모델 서버 과부하로 인해 임시로 2.5 모델로 변경)
