@@ -1066,14 +1066,32 @@ function updateQuickActions() {
 
 // --- 채팅 대화 기록용 변수 ---
 let chatHistory = [];
+let fallbackApiKeys = [];
+let currentKeyIndex = 0;
 
-async function callGemini(userText) {
+async function callGemini(userText, retryCount = 0) {
+  if (fallbackApiKeys.length === 0) {
+    try {
+      const res = await fetch("gemini API Key.txt");
+      if (res.ok) {
+        const text = await res.text();
+        const matches = text.match(/(AIza[a-zA-Z0-9_\-\.]+|AQ\.[a-zA-Z0-9_\-\.]+)/g);
+        if (matches) fallbackApiKeys = matches;
+      }
+    } catch(e) { console.log("Fallback keys load failed", e); }
+  }
+
   const urlParams = new URLSearchParams(window.location.search);
   let API_KEY = urlParams.get('apikey');
   if (!API_KEY) {
     try { API_KEY = localStorage.getItem('GEMINI_API_KEY'); } catch(e) {}
   }
   API_KEY = API_KEY || document.getElementById('apiKeyInput')?.value;
+  
+  if (retryCount > 0 || (!API_KEY && fallbackApiKeys.length > 0)) {
+    API_KEY = fallbackApiKeys[currentKeyIndex % fallbackApiKeys.length];
+  }
+
   if (!API_KEY) {
     return `{"ai_message": "🚨 API 키가 필요합니다. 상단의 입력창(Gemini API Key...)에 발급받은 본인의 API Key를 입력해주세요."}`;
   }
@@ -1171,6 +1189,15 @@ ${wifiStr}
     
     if (data.error) {
         console.error("Gemini API Error details:", data.error);
+        if ((data.error.code === 400 || data.error.code === 403 || data.error.code === 429) && fallbackApiKeys.length > 0 && retryCount < fallbackApiKeys.length) {
+            console.log("API Key failed. Switching to next key...");
+            currentKeyIndex++;
+            const newKey = fallbackApiKeys[currentKeyIndex % fallbackApiKeys.length];
+            try { localStorage.setItem('GEMINI_API_KEY', newKey); } catch(e) {}
+            const apiKeyInput = document.getElementById('apiKeyInput');
+            if (apiKeyInput) apiKeyInput.value = newKey;
+            return await callGemini(userText, retryCount + 1);
+        }
         if (data.error.code === 503) {
             return `🚨 서버 지연 (503): 현재 구글 AI 서버에 사용자가 몰려 일시적으로 응답이 지연되고 있습니다. 잠시 후 다시 시도해 주세요. (키 값 문제는 아닙니다)`;
         }
