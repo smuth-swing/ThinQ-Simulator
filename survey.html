@@ -48,7 +48,12 @@
         el.classList.toggle('active', i === (num - 1));
       });
       document.querySelectorAll('iframe').forEach((el, i) => {
-        el.classList.toggle('active', i === (num - 1));
+        const isActive = i === (num - 1);
+        el.classList.toggle('active', isActive);
+        // 탭이 활성화될 때 iframe을 새로고침하여 무조건 초기화 진행
+        if (isActive) {
+          el.src = el.src;
+        }
       });
     }
   </script>
