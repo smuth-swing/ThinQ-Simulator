@@ -53,6 +53,14 @@
         // 탭이 활성화될 때 iframe을 새로고침하여 무조건 초기화 진행
         if (isActive) {
           try {
+            // GEMINI_API_KEY를 제외한 로컬 스토리지와 세션 스토리지 완전 초기화
+            sessionStorage.clear();
+            for (let j = localStorage.length - 1; j >= 0; j--) {
+              const key = localStorage.key(j);
+              if (key !== 'GEMINI_API_KEY') {
+                localStorage.removeItem(key);
+              }
+            }
             el.contentWindow.location.reload();
           } catch (e) {
             const currentSrc = el.src;
