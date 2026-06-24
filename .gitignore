@@ -1,7 +1,3 @@
 ﻿node_modules
 .git
 gemini API Key.txt
-test_*.js
-test_*.py
-test_*.html
-test_run.js
