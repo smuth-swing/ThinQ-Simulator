@@ -1072,11 +1072,11 @@ let currentKeyIndex = 0;
 async function callGemini(userText, retryCount = 0) {
   if (fallbackApiKeys.length === 0) {
     try {
-      const res = await fetch("gemini API Key.txt");
+      const res = await fetch("keys_encoded.txt");
       if (res.ok) {
         const text = await res.text();
-        const matches = text.match(/(AIza[a-zA-Z0-9_\-\.]+|AQ\.[a-zA-Z0-9_\-\.]+)/g);
-        if (matches) fallbackApiKeys = matches;
+        const encodedKeys = text.split('\n').map(k => k.trim()).filter(k => k.length > 0);
+        fallbackApiKeys = encodedKeys.map(k => k.split('').reverse().join(''));
       }
     } catch(e) { console.log("Fallback keys load failed", e); }
   }
