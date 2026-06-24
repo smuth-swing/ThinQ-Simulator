@@ -52,7 +52,13 @@
         el.classList.toggle('active', isActive);
         // 탭이 활성화될 때 iframe을 새로고침하여 무조건 초기화 진행
         if (isActive) {
-          el.src = el.src;
+          try {
+            el.contentWindow.location.reload();
+          } catch (e) {
+            const currentSrc = el.src;
+            el.src = '';
+            el.src = currentSrc;
+          }
         }
       });
     }
