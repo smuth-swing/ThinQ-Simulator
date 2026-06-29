@@ -1215,6 +1215,11 @@ ${wifiStr}
             return await callGemini(userText, retryCount + 1);
         }
         if (data.error.code === 503) {
+            if (retryCount < 3) {
+                console.log(`503 Server Error. Retrying... (Attempt ${retryCount + 1})`);
+                await new Promise(r => setTimeout(r, (retryCount + 1) * 1000)); // 1초, 2초, 3초 대기
+                return await callGemini(userText, retryCount + 1);
+            }
             return `🚨 서버 지연 (503): 현재 구글 AI 서버에 사용자가 몰려 일시적으로 응답이 지연되고 있습니다. 잠시 후 다시 시도해 주세요. (키 값 문제는 아닙니다)`;
         }
         return `🚨 API 오류 발생 (${data.error.code}): ${data.error.message}\n\n모델 권한이 없거나 키가 잘못되었을 수 있습니다. 콘솔을 확인해주세요.`;

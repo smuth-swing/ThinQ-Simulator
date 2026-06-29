@@ -582,26 +582,11 @@ function selectProduct(id, cat, isAiFlow = false) {
     return;
   }
   state.selectedProduct = p;
-
   if (isAiFlow) {
+    // AI 대화 흐름을 통해 제품이 선택된 경우,
+    // 하드코딩된 환경/블루투스 체크 타이머와 툴팁 덮어쓰기 로직을 비활성화하고
+    // 우측 가이드 패널에 선택된 제품 카드만 표시하도록 합니다.
     showProductCard(p);
-    addAiMessage(`${p.name}를 선택하셨습니다.\n네트워크 환경을 확인합니다... 🔍`);
-    
-    const floatingAi = document.getElementById('floatingAi');
-    const tooltip = document.getElementById('floatingAiTooltip');
-    if (floatingAi && tooltip) {
-      floatingAi.classList.add('scanning');
-      tooltip.style.display = '';
-      tooltip.textContent = '환경 확인 중...';
-    }
-    
-    setTimeout(() => {
-      if (floatingAi) floatingAi.classList.remove('scanning');
-      
-      addAiMessage(`⚠️ **블루투스(BLE)가 꺼져 있어요.**<br>스마트폰의 블루투스를 켜주세요.<br><span style="font-size:12px; color:#555;">(준비되셨다면 "켰어요" 라고 입력해주세요)</span>`);
-      
-      state.waitingForBle = cat; // 사용자의 긍정 답변 대기 상태
-    }, TIMING.BLE_CHECK_DELAY);
   } else {
     // 제품 카테고리 화면에서 직접 제품을 선택(클릭)한 경우,
     // 대화형 확인 절차를 생략하고 바로 해당 기기의 등록 연결 UI 흐름으로 진입합니다.
