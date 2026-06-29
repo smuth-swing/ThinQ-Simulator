@@ -897,10 +897,24 @@ function startSearch(isRestoring = false) {
     'ThinQ 서버 인증 중...',
     '연결 완료!'
   ];
-
   screenContent.innerHTML = `
     <div class="screen" style="padding: 0; margin: 0; width: 100%; height: 100%; overflow: hidden; background: #fff; position: absolute; top: 0; left: 0; z-index: 50; display: flex; align-items: flex-start; justify-content: center;">
       <img src="connecting_ui.png" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;" alt="연결 중 화면">
+      
+      <!-- 제품 검색/연결 중 물결 파동(Ripple Wave) 효과 -->
+      <div class="connect-wave-container">
+        <div class="connect-wave-ring"></div>
+        <div class="connect-wave-ring"></div>
+        <div class="connect-wave-ring"></div>
+      </div>
+      
+      <!-- 보라색 점 세개 물결 로딩 애니메이션 (기존 정적 점 가리기 및 대체) -->
+      <div class="dots-wave-container">
+        <span class="dots-wave-dot"></span>
+        <span class="dots-wave-dot"></span>
+        <span class="dots-wave-dot"></span>
+      </div>
+
       <div id="searchLog" style="display:none;"></div>
     </div>`;
 
